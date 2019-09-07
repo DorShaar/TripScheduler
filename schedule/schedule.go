@@ -5,12 +5,12 @@ import (
 )
 
 type Schedule struct {
-	EventLists []event.Event
+	EventsList []event.Event
 }
 
 func (schedule *Schedule) AddEvent(newEvent event.Event) {
 	var shouldAddEvent bool = true
-	for _, event := range schedule.EventLists {
+	for _, event := range schedule.EventsList {
 		if event.EventTime.AreCoincide(newEvent.EventTime) {
 			shouldAddEvent = false
 			break
@@ -18,6 +18,6 @@ func (schedule *Schedule) AddEvent(newEvent event.Event) {
 	}
 
 	if shouldAddEvent {
-		schedule.EventLists = append(schedule.EventLists, newEvent)
+		schedule.EventsList = append(schedule.EventsList, newEvent)
 	}
 }

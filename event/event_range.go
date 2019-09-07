@@ -8,14 +8,14 @@ import (
 const timeFormat = "Jan _2, 2006 15:04"
 
 type EventRange struct {
-	EventName      string
-	Location       string
-	TimeRangeLists []TimeRange
+	EventName     string
+	Location      string
+	TimeRangeList []TimeRange
 }
 
 func (eventRange *EventRange) AddTimeRange(newTimeRange TimeRange) {
 	var shouldAddEvent bool = true
-	for _, timeRange := range eventRange.TimeRangeLists {
+	for _, timeRange := range eventRange.TimeRangeList {
 		if timeRange.AreCoincide(newTimeRange) {
 			shouldAddEvent = false
 			break
@@ -23,7 +23,7 @@ func (eventRange *EventRange) AddTimeRange(newTimeRange TimeRange) {
 	}
 
 	if shouldAddEvent {
-		eventRange.TimeRangeLists = append(eventRange.TimeRangeLists, newTimeRange)
+		eventRange.TimeRangeList = append(eventRange.TimeRangeList, newTimeRange)
 	}
 }
 

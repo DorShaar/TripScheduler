@@ -1,4 +1,4 @@
-package main
+package event
 
 import (
 	"fmt"
@@ -21,17 +21,4 @@ func (e Event) PrintEvent() {
 		e.StartingTime.Format("2006-01-02 15:04"),
 		e.Duration.Hours(),
 		e.PrecautionTime.Minutes())
-}
-
-func main() {
-	duration, _ := time.ParseDuration("90m")
-	precautionTime, _ := time.ParseDuration("25m")
-
-	e := Event{
-		EventName:      "Shopping !",
-		StartingTime:   time.Now(),
-		Duration:       duration,
-		PrecautionTime: precautionTime,
-		Location:       "Oxford Street"}
-	e.PrintEvent()
 }

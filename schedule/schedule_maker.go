@@ -6,10 +6,17 @@ type ScheduleMaker struct {
 	SchedulesList []Schedule
 }
 
-func (ScheduleMaker *ScheduleMaker) ComputeSchedules(eventRangeList []event.EventRange) {
+func (scheduleMaker *ScheduleMaker) ComputeSchedules(eventRangeList []event.EventRange) {
+	events := make([]event.Event, 50, 50)
 	for _, eventRange := range eventRangeList {
 		for _, timeRange := range eventRange.TimeRangeList {
-			timeRange.
+			newEvent := event.Event {
+				EventName:	eventRange.EventName,
+				Location:  	eventRange.Location,
+				EventTime:	EventTime
+			}
+			
+			append(events, newEvent)
 		}
 	}
 }

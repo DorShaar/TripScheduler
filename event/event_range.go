@@ -5,8 +5,6 @@ import (
 	"time"
 )
 
-const timeFormat = "Jan _2, 2006 15:04"
-
 type EventRange struct {
 	EventName     string
 	Location      string
@@ -27,18 +25,19 @@ func (eventRange *EventRange) AddTimeRange(newTimeRange TimeRange) {
 	}
 }
 
-// func (eventRange *EventRange) CreateEventsList() []Event {
-// 	eventsList := make([]Event, 50, 50)
-// 	for _, timeRange := range eventRange.TimeRangeList {
-// 		newEvent := Event{
-// 			EventName: eventRange.EventName,
-// 			Location:  eventRange.Location,
-// 			EventTime: eventRange.TimeRangeList,
-// 		}
+func (eventRange *EventRange) CreateEventsList() []Event {
+	eventsList := make([]Event, 0)
+	getAllPossibleStartingTimes
+	for _, timeRange := range eventRange.TimeRangeList {
+		newEvent := Event{
+			EventName: eventRange.EventName,
+			Location:  eventRange.Location,
+			EventTime: eventRange.TimeRangeList,
+		}
 
-// 		append(eventsList, newEvent)
-// 	}
-// }
+		append(eventsList, newEvent)
+	}
+}
 
 type TimeRange struct {
 	startTime  time.Time
@@ -77,12 +76,15 @@ func (currentTimeRange TimeRange) AreCoincide(timeRange TimeRange) bool {
 }
 
 func (timeRange TimeRange) getAllPossibleStartingTimes(intervalInMinuts int) []time.Time {
-	timeList := make([]time.Time, 20, 20)
+	timeList := make([]time.Time, 0)
 	var shouldStop bool = false
 	for timeCounter := 0; !shouldStop; timeCounter += intervalInMinuts {
-		currentTime := timeRange.startTime.Add(time.Duration(timeCounter))
-		shouldStop = currentTime.Before(timeRange.endingTime)
-		timeList = append(timeList, currentTime)
+		currentTime := timeRange.startTime.Add(time.Duration(timeCounter) * time.Minute)
+		shouldStop =
+			currentTime.After(timeRange.endingTime) || currentTime == timeRange.endingTime
+		if !shouldStop {
+			timeList = append(timeList, currentTime)
+		}
 	}
 
 	return timeList

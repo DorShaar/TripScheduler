@@ -18,7 +18,7 @@ func (e Event) PrintEvent() string {
 		e.EventTime.ActualStartingTime.Weekday(),
 		e.EventTime.ActualStartingTime.Format("2006-01-02 15:04"),
 		e.EventTime.Duration.Hours(),
-		e.EventTime.PrecautionTime.Minutes())
+		e.EventTime.PrecautionDuration.Minutes())
 
 	return eventInfo
 }
@@ -26,12 +26,12 @@ func (e Event) PrintEvent() string {
 type EventTime struct {
 	ActualStartingTime time.Time
 	Duration           time.Duration
-	PrecautionTime     time.Duration
+	PrecautionDuration time.Duration
 }
 
 // The ActualStartingTime minus the PrecautionTime
 func (et EventTime) StartingTime() time.Time {
-	return et.ActualStartingTime.Add(-et.PrecautionTime)
+	return et.ActualStartingTime.Add(-et.PrecautionDuration)
 }
 
 // The ActualStartingTime plus the Duration of event
@@ -41,11 +41,11 @@ func (et EventTime) EndingTime() time.Time {
 
 // The ActualStartingTime minus the PrecautionTime
 func (currentEventTime EventTime) AreCoincide(eventTime EventTime) bool {
-	if eventTime.StartingTime().After(currentEventTime.EndingTime()) {
+	if currentEventTime.StartingTime().After(eventTime.EndingTime()) {
 		return false
 	}
 
-	if eventTime.EndingTime().Before(currentEventTime.StartingTime()) {
+	if currentEventTime.EndingTime().Before(eventTime.StartingTime()) {
 		return false
 	}
 

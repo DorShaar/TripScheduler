@@ -13,28 +13,17 @@ type EventRange struct {
 	TimeRangeLists []TimeRange
 }
 
-func (eventRange EventRange) Test() {
-	var t TimeRange
-
-	startingTime, _ := time.Parse(timeFormat, "Sep 13, 2019 05:00")
-	endingTime, _ := time.Parse(timeFormat, "Sep 13, 2019 08:00")
-	t.CreateRange(startingTime, endingTime)
-
-	// t.CreateRange(endingTime, startingTime)
-	// fmt.Println("good")
-}
-
 func (eventRange *EventRange) AddTimeRange(newTimeRange TimeRange) {
 	var shouldAddEvent bool = true
-	for _, event := range schedule.EventLists {
-		if event.EventTime.AreCoincide(newEvent.EventTime) {
+	for _, timeRange := range eventRange.TimeRangeLists {
+		if timeRange.AreCoincide(newTimeRange) {
 			shouldAddEvent = false
 			break
 		}
 	}
 
 	if shouldAddEvent {
-		schedule.EventLists = append(schedule.EventLists, newEvent)
+		eventRange.TimeRangeLists = append(eventRange.TimeRangeLists, newTimeRange)
 	}
 }
 
@@ -59,4 +48,17 @@ func (timeRange TimeRange) StartingTime() time.Time {
 
 func (timeRange TimeRange) EndingTime() time.Time {
 	return timeRange.endingTime
+}
+
+// The ActualStartingTime minus the PrecautionTime
+func (currentTimeRange TimeRange) AreCoincide(timeRange TimeRange) bool {
+	if currentTimeRange.StartingTime().After(timeRange.EndingTime()) {
+		return false
+	}
+
+	if currentTimeRange.EndingTime().Before(timeRange.StartingTime()) {
+		return false
+	}
+
+	return true
 }

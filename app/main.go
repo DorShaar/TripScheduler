@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"time"
 	"trip_scheduler/event"
+	"trip_scheduler/schedule"
 )
 
 func main() {
@@ -10,11 +12,17 @@ func main() {
 	precautionTime, _ := time.ParseDuration("25m")
 
 	e := event.Event{
-		EventName:      "Shopping !",
-		StartingTime:   time.Now(),
-		Duration:       duration,
-		PrecautionTime: precautionTime,
-		Location:       "Oxford Street"}
+		EventName: "Shopping !",
+		Location:  "Oxford Street",
+		EventTime: event.EventTime{
+			ActualStartingTime: time.Now(),
+			Duration:           duration,
+			PrecautionDuration: precautionTime}}
 
-	e.PrintEvent()
+	d := schedule.Schedule{}
+	fmt.Println(d.EventLists == nil)
+	fmt.Printf("%d\n", len(d.EventLists))
+
+	d.AddEvent(e)
+	fmt.Printf("%d", len(d.EventLists))
 }

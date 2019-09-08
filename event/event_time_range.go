@@ -1,49 +1,6 @@
 package event
 
-import (
-	"time"
-)
-
-type EventRange struct {
-	EventName         string
-	Location          string
-	EventDurationInfo EventDurationInfo
-	TimeRangeList     []TimeRange
-}
-
-func (eventRange *EventRange) AddTimeRange(newTimeRange TimeRange) {
-	var shouldAddEvent bool = true
-	for _, timeRange := range eventRange.TimeRangeList {
-		if timeRange.AreCoincide(newTimeRange) {
-			shouldAddEvent = false
-			break
-		}
-	}
-
-	if shouldAddEvent {
-		eventRange.TimeRangeList = append(eventRange.TimeRangeList, newTimeRange)
-	}
-}
-
-func (eventRange *EventRange) CreateEventsList() []Event {
-	const intervalInMinutes = 15
-	eventsList := make([]Event, 0)
-	for _, timeRange := range eventRange.TimeRangeList {
-		possibleStartingTimes := timeRange.getAllPossibleStartingTimes(intervalInMinutes)
-		for _, startingTime := range possibleStartingTimes {
-			newEvent := Event{
-				EventName: eventRange.EventName,
-				Location:  eventRange.Location,
-				EventTime: EventTime{
-					ActualStartingTime: startingTime,
-					EventDurationInfo:  eventRange.EventDurationInfo}}
-
-			eventsList = append(eventsList, newEvent)
-		}
-	}
-
-	return eventsList
-}
+import "time"
 
 type TimeRange struct {
 	startTime  time.Time

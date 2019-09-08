@@ -6,41 +6,70 @@ import (
 )
 
 type Event struct {
-	EventName string
-	Location  string
-	EventTime EventTime
+	EventName      string
+	Location       string
+	TimeRangesList []TimeRange
+	EventTime      EventTime
 }
 
 func (e Event) PrintEvent() string {
 	eventInfo := fmt.Sprintf("'%s', located on %s, starts on %s %s for %.1f hours. Should Come %.0f minutes before.",
 		e.EventName,
 		e.Location,
-		e.EventTime.ActualStartingTime.Weekday(),
-		e.EventTime.ActualStartingTime.Format("2006-01-02 15:04"),
-		e.EventTime.EventDurationInfo.Duration.Hours(),
-		e.EventTime.EventDurationInfo.PrecautionDuration.Minutes())
+		e.EventTime.actualStartingTime.Weekday(),
+		e.EventTime.actualStartingTime.Format("2006-01-02 15:04"),
+		e.EventTime.Duration.Hours(),
+		e.EventTime.PrecautionDuration.Minutes())
 
 	return eventInfo
 }
 
-type EventDurationInfo struct {
-	Duration           time.Duration
-	PrecautionDuration time.Duration
+func (event *Event) RegisterTimeRange(newTimeRange TimeRange) {
+	var shouldAddEvent bool = true
+	for _, timeRange := range event.TimeRangesList {
+		if timeRange.AreCoincide(newTimeRange) {
+			shouldAddEvent = false
+			break
+		}
+	}
+
+	if shouldAddEvent {
+		event.TimeRangesList = append(event.TimeRangesList, newTimeRange)
+	}
+}
+
+func (event Event) CreateEventsList() []Event {
+	const intervalInMinutes = 15
+	eventsList := make([]Event, 0)
+	for _, timeRange := range event.TimeRangesList {
+		possibleStartingTimes := timeRange.getAllPossibleStartingTimes(intervalInMinutes)
+		for _, startingTime := range possibleStartingTimes {
+			event.EventTime.actualStartingTime = startingTime
+			eventsList = append(eventsList, event)
+		}
+	}
+
+	return eventsList
 }
 
 type EventTime struct {
-	ActualStartingTime time.Time
-	EventDurationInfo  EventDurationInfo
+	Duration           time.Duration
+	PrecautionDuration time.Duration
+	actualStartingTime time.Time
 }
 
 // The ActualStartingTime minus the PrecautionTime
 func (et EventTime) StartingTime() time.Time {
-	return et.ActualStartingTime.Add(-et.EventDurationInfo.PrecautionDuration)
+	return et.actualStartingTime.Add(-et.PrecautionDuration)
 }
 
 // The ActualStartingTime plus the Duration of event
 func (et EventTime) EndingTime() time.Time {
-	return et.ActualStartingTime.Add(et.EventDurationInfo.Duration)
+	return et.actualStartingTime.Add(et.Duration)
+}
+
+func (et EventTime) ActualStartingTime() time.Time {
+	return et.actualStartingTime
 }
 
 // The ActualStartingTime minus the PrecautionTime

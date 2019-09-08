@@ -12,9 +12,8 @@ func Test_StartingTime(t *testing.T) {
 	precautionDuration, _ := time.ParseDuration("45m")
 
 	eventTime := EventTime{
-		ActualStartingTime: actualStartingTime,
-		EventDurationInfo: EventDurationInfo{
-			PrecautionDuration: precautionDuration}}
+		actualStartingTime: actualStartingTime,
+		PrecautionDuration: precautionDuration}
 
 	time := eventTime.StartingTime()
 	if time.Day() != 13 || time.Hour() != 3 || time.Minute() != 15 {
@@ -27,9 +26,8 @@ func Test_EndingTime(t *testing.T) {
 	duration, _ := time.ParseDuration("3h15m")
 
 	eventTime := EventTime{
-		ActualStartingTime: actualStartingTime,
-		EventDurationInfo: EventDurationInfo{
-			Duration: duration}}
+		actualStartingTime: actualStartingTime,
+		Duration:           duration}
 
 	time := eventTime.EndingTime()
 	if time.Day() != 13 || time.Hour() != 19 || time.Minute() != 15 {
@@ -43,20 +41,18 @@ func Test_AreCoincide_False(t *testing.T) {
 	precautionDuration1, _ := time.ParseDuration("45m")
 
 	eventTime1 := EventTime{
-		ActualStartingTime: actualStartingTime1,
-		EventDurationInfo: EventDurationInfo{
-			Duration:           duration1,
-			PrecautionDuration: precautionDuration1}}
+		actualStartingTime: actualStartingTime1,
+		Duration:           duration1,
+		PrecautionDuration: precautionDuration1}
 
 	actualStartingTime2, _ := time.Parse(timeFormat, "Sep 13, 2019 08:00")
 	duration2, _ := time.ParseDuration("1h")
 	precautionDuration2, _ := time.ParseDuration("10m")
 
 	eventTime2 := EventTime{
-		ActualStartingTime: actualStartingTime2,
-		EventDurationInfo: EventDurationInfo{
-			Duration:           duration2,
-			PrecautionDuration: precautionDuration2}}
+		actualStartingTime: actualStartingTime2,
+		Duration:           duration2,
+		PrecautionDuration: precautionDuration2}
 
 	if eventTime1.AreCoincide(eventTime2) {
 		t.Errorf("Events are coinciding although they should not.")
@@ -69,20 +65,18 @@ func Test_AreCoincide_True(t *testing.T) {
 	precautionDuration1, _ := time.ParseDuration("45m")
 
 	eventTime1 := EventTime{
-		ActualStartingTime: actualStartingTime1,
-		EventDurationInfo: EventDurationInfo{
-			Duration:           duration1,
-			PrecautionDuration: precautionDuration1}}
+		actualStartingTime: actualStartingTime1,
+		Duration:           duration1,
+		PrecautionDuration: precautionDuration1}
 
 	actualStartingTime2, _ := time.Parse(timeFormat, "Sep 13, 2019 at 08:00pm")
 	duration2, _ := time.ParseDuration("1h")
 	precautionDuration2, _ := time.ParseDuration("2h")
 
 	eventTime2 := EventTime{
-		ActualStartingTime: actualStartingTime2,
-		EventDurationInfo: EventDurationInfo{
-			Duration:           duration2,
-			PrecautionDuration: precautionDuration2}}
+		actualStartingTime: actualStartingTime2,
+		Duration:           duration2,
+		PrecautionDuration: precautionDuration2}
 
 	if !eventTime1.AreCoincide(eventTime2) {
 		t.Error("Events are not coinciding although they should coincide")

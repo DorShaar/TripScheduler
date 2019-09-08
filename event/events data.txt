@@ -1,0 +1,16 @@
+name: shopping
+location: Oxford
+duration info:
+	duration: 8h
+	precaution: 15m
+timeRange:
+	start time: 08:00
+	end time: 19:00
+
+name: lion king
+location: street abc
+duration info:
+	duration: 2.5h
+	precaution: 30m
+timeRange:
+	start time: 19:00

@@ -1,0 +1,6 @@
+name: Walking in Hyde Park
+location: Hyde Park
+time_range: 
+ - 07:00 - 19:00
+duration: 2h
+precaution_duration: 15m

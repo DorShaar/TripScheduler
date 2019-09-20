@@ -1,0 +1,7 @@
+name: Shopping in Camden Market
+location: Camden Town
+time_range:
+  - Sunday: 07:00 - 15:00
+  - Saturday: 08:00-22:00
+duration: 4h
+precaution_duration: 0m

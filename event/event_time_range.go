@@ -3,26 +3,29 @@ package event
 import "time"
 
 type TimeRange struct {
+	weekday    string
 	startTime  time.Time
 	endingTime time.Time
 }
 
-func (timeRange *TimeRange) CreateRange(start time.Time, end time.Time) {
+func CreateRange(start time.Time, end time.Time) (timeRange TimeRange) {
 	if start.After(end) {
 		panic("Given starting time is after given ending time")
 	}
 
 	timeRange.startTime = start
 	timeRange.endingTime = end
+	return timeRange
 }
 
-func (timeRange *TimeRange) CreateRangeByDuration(start time.Time, duration time.Duration) {
-	if duration.Nanoseconds() < 0 || duration.Nanoseconds() == 0 {
-		panic("Duration cannot be negative or zerp")
+func CreateRangeByDuration(start time.Time, duration time.Duration) (timeRange TimeRange) {
+	if duration.Nanoseconds() <= 0 {
+		panic("Duration cannot be negative or zero")
 	}
 
 	timeRange.startTime = start
 	timeRange.endingTime = start.Add(duration)
+	return timeRange
 }
 
 func (timeRange TimeRange) StartingTime() time.Time {

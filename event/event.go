@@ -38,7 +38,7 @@ func (event *Event) RegisterTimeRange(newTimeRange TimeRange) {
 	}
 }
 
-// Get all possible events with updated actual starting time.
+// Get all possible events with updated ActualStartingTime.
 func (event Event) CreateEventsList() []Event {
 	const intervalInMinutes = 15
 	eventsList := make([]Event, 0)

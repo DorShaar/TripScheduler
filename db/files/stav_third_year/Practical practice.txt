@@ -1,6 +1,6 @@
 name: Practical practice
 location: MTA
 time_range:
-  - Sunday: 16:15
+  - Sunday 16:15
 duration: 1.5h
 precaution_duration: 0m

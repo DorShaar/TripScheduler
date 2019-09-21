@@ -1,9 +1,9 @@
 name: Psychopatology
 location: MTA
 time_range:
-  - Monday: 12:15
-  - Tuesday: 08:15
-  - Tuesday: 10:15
-  - Wednesday: 12:15
+  - Monday 12:15
+  - Tuesday 08:15
+  - Tuesday 10:15
+  - Wednesday 12:15
 duration: 1.5h
 precaution_duration: 0m

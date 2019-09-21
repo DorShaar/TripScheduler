@@ -1,7 +1,7 @@
 name: Workers guideness
 location: MTA
 time_range:
-  - Sunday: 14:15
-  - Thursday: 14:15
+  - Sunday 14:15
+  - Thursday 14:15
 duration: 1.5h
 precaution_duration: 0m

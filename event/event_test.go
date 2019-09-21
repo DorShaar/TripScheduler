@@ -82,3 +82,27 @@ func Test_AreCoincide_True(t *testing.T) {
 		t.Error("Events are not coinciding although they should coincide")
 	}
 }
+
+func Test_CreateEventsList_ListLengthIs1(t *testing.T) {
+	timeLayout := "15:04"
+	startingTime, _ := time.Parse(timeLayout, "14:15")
+	endingTime, _ := time.Parse(timeLayout, "15:45")
+	timeRangeList := make([]TimeRange, 0)
+	timeRangeList = append(timeRangeList, TimeRange{
+		startTime:  startingTime,
+		endingTime: endingTime})
+	duration, _ := time.ParseDuration("1.5h")
+	precautionDuration, _ := time.ParseDuration("0m")
+	dummyActualStartingTime, _ := time.Parse(timeLayout, "00:00")
+	event := BuildEventByParameters(
+		"DummyEvent",
+		"DummyLocation",
+		timeRangeList,
+		duration,
+		precautionDuration,
+		dummyActualStartingTime)
+
+	if len(event.CreateEventsList()) != 1 {
+		t.Error("CreateEventsList was not performed well")
+	}
+}

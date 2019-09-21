@@ -6,10 +6,11 @@ import (
 )
 
 func Test_BuildEventFronYAML_TimeRangeWithOneValue(t *testing.T) {
+	timeLayout := "22:22"
 	expectedDuration, _ := time.ParseDuration("2h")
 	expectedPrecautionDuration, _ := time.ParseDuration("15m")
-	expectedStartingTime, _ := time.Parse("22:22", "07:00")
-	expectedEndingTime, _ := time.Parse("22:22", "19:00")
+	expectedStartingTime, _ := time.Parse(timeLayout, "07:00")
+	expectedEndingTime, _ := time.Parse(timeLayout, "19:00")
 
 	event, _ := BuildEventFronYAML("test_files/hyde_park.txt")
 	if event.EventName != "Walking in Hyde Park" ||

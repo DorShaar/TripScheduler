@@ -43,7 +43,8 @@ func (event Event) CreateEventsList() []Event {
 	const intervalInMinutes = 15
 	eventsList := make([]Event, 0)
 	for _, timeRange := range event.TimeRangesList {
-		possibleStartingTimes := timeRange.getAllPossibleStartingTimes(intervalInMinutes)
+		possibleStartingTimes := timeRange.getAllPossibleStartingTimes(
+			intervalInMinutes, event.EventTime.Duration)
 		for _, startingTime := range possibleStartingTimes {
 			event.EventTime.actualStartingTime = startingTime
 			eventsList = append(eventsList, event)

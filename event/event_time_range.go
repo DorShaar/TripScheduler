@@ -1,6 +1,8 @@
 package event
 
-import "time"
+import (
+	"time"
+)
 
 type TimeRange struct {
 	weekday    string
@@ -49,15 +51,21 @@ func (currentTimeRange TimeRange) AreCoincide(timeRange TimeRange) bool {
 	return true
 }
 
-func (timeRange TimeRange) getAllPossibleStartingTimes(intervalInMinutes int) []time.Time {
+func (timeRange TimeRange) getAllPossibleStartingTimes(
+	intervalInMinutes int,
+	eventDuration time.Duration) []time.Time {
 	timeList := make([]time.Time, 0)
 	var shouldStop bool = false
 	for timeCounter := 0; !shouldStop; timeCounter += intervalInMinutes {
-		currentTime := timeRange.startTime.Add(time.Duration(timeCounter) * time.Minute)
+		currentStartTime := timeRange.startTime.Add(time.Duration(timeCounter) * time.Minute)
+		currentEndingTime := currentStartTime.Add(eventDuration)
 		shouldStop =
-			currentTime.After(timeRange.endingTime) || currentTime == timeRange.endingTime
+			currentStartTime.After(timeRange.endingTime) ||
+				currentStartTime == timeRange.endingTime ||
+				currentEndingTime.After(timeRange.endingTime)
+
 		if !shouldStop {
-			timeList = append(timeList, currentTime)
+			timeList = append(timeList, currentStartTime)
 		}
 	}
 

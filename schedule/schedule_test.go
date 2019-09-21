@@ -17,7 +17,7 @@ func Test_AddEvent_EmptySchedule_Success(t *testing.T) {
 
 	schedule := Schedule{}
 	schedule.AddEvent(event)
-	if len(schedule.EventLists) != 1 {
+	if len(schedule.EventsList) != 1 {
 		t.Error("Event was not added to the schedule")
 	}
 }
@@ -41,7 +41,7 @@ func Test_AddEvent_Success(t *testing.T) {
 	event2 := CreateEvent(actualStartingTime2, duration2, precautionDuration2)
 	schedule.AddEvent(event2)
 
-	if len(schedule.EventLists) != 2 {
+	if len(schedule.EventsList) != 2 {
 		t.Error("Event was not added to the schedule")
 	}
 }
@@ -65,7 +65,7 @@ func Test_AddEvent_Fail(t *testing.T) {
 	event2 := CreateEvent(actualStartingTime2, duration2, precautionDuration2)
 	schedule.AddEvent(event2)
 
-	if len(schedule.EventLists) != 1 {
+	if len(schedule.EventsList) != 1 {
 		t.Error("Schedule should have only one event")
 	}
 }
@@ -74,11 +74,13 @@ func CreateEvent(
 	actualStartingTime time.Time,
 	duration time.Duration,
 	precautionDuration time.Duration) event.Event {
-	return event.Event{
-		EventName: "Shopping !",
-		Location:  "Oxford Street",
-		EventTime: event.EventTime{
-			ActualStartingTime: actualStartingTime,
-			Duration:           duration,
-			PrecautionDuration: precautionDuration}}
+
+	timeRangesList := make([]event.TimeRange, 0)
+	return event.BuildEventByParameters(
+		"Shopping !",
+		"Oxford Street",
+		timeRangesList,
+		duration,
+		precautionDuration,
+		actualStartingTime)
 }

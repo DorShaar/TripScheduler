@@ -12,8 +12,8 @@ type Event struct {
 	EventTime      EventTime
 }
 
-func (e Event) PrintEvent() string {
-	eventInfo := fmt.Sprintf("'%s', located on %s, starts on %s %s for %.1f hours. Should Come %.0f minutes before.",
+func (e Event) GetEventData() string {
+	eventDescription := fmt.Sprintf("'%s', located on %s, starts on %s %s for %.1f hours. Should Come %.0f minutes before.",
 		e.EventName,
 		e.Location,
 		e.EventTime.actualStartingTime.Weekday(),
@@ -21,7 +21,7 @@ func (e Event) PrintEvent() string {
 		e.EventTime.Duration.Hours(),
 		e.EventTime.PrecautionDuration.Minutes())
 
-	return eventInfo
+	return eventDescription
 }
 
 func (event *Event) RegisterTimeRange(newTimeRange TimeRange) {
@@ -38,6 +38,7 @@ func (event *Event) RegisterTimeRange(newTimeRange TimeRange) {
 	}
 }
 
+// Get all possible events with updated actual starting time.
 func (event Event) CreateEventsList() []Event {
 	const intervalInMinutes = 15
 	eventsList := make([]Event, 0)

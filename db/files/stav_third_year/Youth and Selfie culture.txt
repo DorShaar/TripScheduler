@@ -1,0 +1,6 @@
+name: Youth and Selfie culture
+location: MTA
+time_range:
+  - Thursday: 16:15
+duration: 1.5h
+precaution_duration: 0m

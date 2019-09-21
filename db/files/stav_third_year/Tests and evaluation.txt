@@ -1,0 +1,9 @@
+name: Tests and evaluation
+location: MTA
+time_range:
+  - Sunday: 10:15
+  - Sunday: 12:15
+  - Tuesday: 08:15
+  - Tuesday: 10:30
+duration: 1.5h
+precaution_duration: 0m

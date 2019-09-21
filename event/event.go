@@ -72,7 +72,6 @@ func (et EventTime) ActualStartingTime() time.Time {
 	return et.actualStartingTime
 }
 
-// The ActualStartingTime minus the PrecautionTime
 func (currentEventTime EventTime) AreCoincide(eventTime EventTime) bool {
 	if currentEventTime.StartingTime().After(eventTime.EndingTime()) {
 		return false

@@ -109,3 +109,21 @@ func parseWeekday(dayStr string) (time.Weekday, error) {
 
 	panic("invalid weekday")
 }
+
+func BuildEventByParameters(
+	name string,
+	location string,
+	timeRangesStrings []TimeRange,
+	duration time.Duration,
+	precautionDuration time.Duration,
+	actualStartingTime time.Time) (eventResult Event) {
+
+	eventResult.EventName = name
+	eventResult.Location = location
+	eventResult.TimeRangesList = timeRangesStrings
+	eventResult.EventTime.Duration = duration
+	eventResult.EventTime.PrecautionDuration = precautionDuration
+	eventResult.EventTime.actualStartingTime = actualStartingTime
+
+	return eventResult
+}

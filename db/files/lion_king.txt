@@ -1,5 +1,0 @@
-name: Lion King Show
-location: Lyceum Theatre
-time_range: 19:30
-duration: 2.5h
-precaution_duration: 30m

@@ -1,6 +1,6 @@
 name: People Development
 location: MTA
 time_range:
-  - Thursday 10:15
+  - Thursday 10:15 - 11:45
 duration: 1.5h
 precaution_duration: 0m

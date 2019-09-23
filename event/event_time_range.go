@@ -32,11 +32,11 @@ func CreateRangeByDuration(start time.Time, duration time.Duration) (timeRange T
 }
 
 func (timeRange TimeRange) StartingTime() time.Time {
-	return timeRange.startTime
+	return timeRange.startTime.AddDate(0, 0, getDaysToAdd(timeRange.weekday))
 }
 
 func (timeRange TimeRange) EndingTime() time.Time {
-	return timeRange.endingTime
+	return timeRange.endingTime.AddDate(0, 0, getDaysToAdd(timeRange.weekday))
 }
 
 // The ActualStartingTime minus the PrecautionTime
@@ -58,25 +58,15 @@ func (timeRange TimeRange) getAllPossibleStartingTimes(
 	var timeList []time.Time
 	var shouldStop bool = false
 
-	var daysToAdd int
-	if timeRange.weekday != "" {
-		weekdayParser := time_extended.WeekdayParser{}
-		daysToAdd = (int)(weekdayParser.Parse(timeRange.weekday))
-	}
-
 	for timeCounter := 0; !shouldStop; timeCounter += intervalInMinutes {
-		// Setting currentStartTime
-		currentStartTime := timeRange.startTime.Add(time.Duration(timeCounter) * time.Minute)
-		currentStartTime = currentStartTime.AddDate(0, 0, daysToAdd)
-
-		// Setting currentEndingTime
+		currentStartTime := timeRange.StartingTime().
+			Add(time.Duration(timeCounter) * time.Minute)
 		currentEndingTime := currentStartTime.Add(eventDuration)
-		currentEndingTime = currentEndingTime.AddDate(0, 0, daysToAdd)
 
 		shouldStop =
-			currentStartTime.After(timeRange.endingTime) ||
-				currentStartTime == timeRange.endingTime ||
-				currentEndingTime.After(timeRange.endingTime)
+			currentStartTime.After(timeRange.EndingTime()) ||
+				currentStartTime == timeRange.EndingTime() ||
+				currentEndingTime.After(timeRange.EndingTime())
 
 		if !shouldStop {
 			timeList = append(timeList, currentStartTime)
@@ -84,4 +74,14 @@ func (timeRange TimeRange) getAllPossibleStartingTimes(
 	}
 
 	return timeList
+}
+
+func getDaysToAdd(weekday string) int {
+	var daysToAdd int
+	if weekday != "" {
+		weekdayParser := time_extended.WeekdayParser{}
+		daysToAdd = (int)(weekdayParser.Parse(weekday))
+	}
+
+	return daysToAdd
 }

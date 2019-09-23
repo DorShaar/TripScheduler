@@ -28,11 +28,15 @@ func Test_BuildEventFronYAML_TimeRangeWithTwoValues(t *testing.T) {
 
 	expectedDay1 := "Sunday"
 	expectedStartingTime1, _ := time.Parse(timeLayout, "07:00")
+	expectedStartingTime1 = expectedStartingTime1.AddDate(0, 0, getDaysToAdd(expectedDay1))
 	expectedEndingTime1, _ := time.Parse(timeLayout, "15:00")
+	expectedEndingTime1 = expectedEndingTime1.AddDate(0, 0, getDaysToAdd(expectedDay1))
 
 	expectedDay2 := "Saturday"
 	expectedStartingTime2, _ := time.Parse(timeLayout, "08:00")
+	expectedStartingTime2 = expectedStartingTime2.AddDate(0, 0, getDaysToAdd(expectedDay2))
 	expectedEndingTime2, _ := time.Parse(timeLayout, "22:00")
+	expectedEndingTime2 = expectedEndingTime2.AddDate(0, 0, getDaysToAdd(expectedDay2))
 
 	event, _ := BuildEventFronYAML("test_files/camden_town.txt")
 	if event.TimeRangesList[0].weekday != expectedDay1 ||

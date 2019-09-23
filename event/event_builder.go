@@ -10,16 +10,6 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-var daysOfWeek = map[string]time.Weekday{}
-
-func init() {
-	for d := time.Sunday; d <= time.Saturday; d++ {
-		name := d.String()
-		daysOfWeek[name] = d
-		daysOfWeek[name[:3]] = d
-	}
-}
-
 type eventInterface struct {
 	Name                string
 	Location            string
@@ -100,14 +90,6 @@ func parseTimeRange(timeRangesStr string) TimeRange {
 	}
 
 	return CreateRange(startingTime, endingTime)
-}
-
-func parseWeekday(dayStr string) (time.Weekday, error) {
-	if day, ok := daysOfWeek[dayStr]; ok {
-		return day, nil
-	}
-
-	panic("invalid weekday")
 }
 
 func BuildEventByParameters(

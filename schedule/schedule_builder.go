@@ -1,29 +1,48 @@
 package schedule
 
 import (
+	"container/list"
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
 	"trip_scheduler/event"
 )
 
-func BuildSchedulesFromFiles(filesDirectory string) (schedules []Schedule) {
-	schedules = make([]Schedule, 1)
-	schedules[0] = Schedule{}
-	// NOT FINISHED
+func BuildSchedulesFromFiles(filesDirectory string) list.List {
+	shouldProcessQueue := list.New()
+	doneQueue := list.New()
+
+	emptySchedule := Schedule{}
+	shouldProcessQueue.PushBack(emptySchedule)
+
 	allRegisteredEvents := getAllEventsList(filesDirectory)
 	for _, registeredEvent := range allRegisteredEvents {
-		for _, possibleEvent := range registeredEvent.CreateEventsList() {
-			// for _, schedule := range schedules {
-			if !schedules[0].TryAddEvent(possibleEvent) {
-				fmt.Printf("Event %s could not be added", possibleEvent.EventName)
-			} else {
-				fmt.Printf("schedule contains %d events\n", len(schedules[0].eventsList))
+		for shouldProcessQueue.Len() > 0 {
+			element := shouldProcessQueue.Front()
+			shouldProcessQueue.Remove(element)
+
+			originalSchedule, ok := element.Value.(Schedule)
+			if !ok {
+				errMsg := fmt.Sprintf("Some element was of type %T, expected type Schedule\n",
+					originalSchedule)
+				panic(errMsg)
 			}
-			// }
+
+			for _, possibleEvent := range registeredEvent.CreateEventsList() {
+				newSchedule := originalSchedule
+				if newSchedule.TryAddEvent(possibleEvent) {
+					doneQueue.PushBack(newSchedule)
+				}
+			}
 		}
+
+		tempQueue := shouldProcessQueue
+		shouldProcessQueue = doneQueue
+		doneQueue = tempQueue
 	}
-	return schedules
+
+	doneQueue = shouldProcessQueue
+	return *doneQueue
 }
 
 func getAllEventsList(filesDirectory string) []event.Event {

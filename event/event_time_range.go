@@ -2,6 +2,7 @@ package event
 
 import (
 	"time"
+	"trip_scheduler/time_extended"
 )
 
 type TimeRange struct {
@@ -56,9 +57,22 @@ func (timeRange TimeRange) getAllPossibleStartingTimes(
 	eventDuration time.Duration) []time.Time {
 	var timeList []time.Time
 	var shouldStop bool = false
+
+	var daysToAdd int
+	if timeRange.weekday != "" {
+		weekdayParser := time_extended.WeekdayParser{}
+		daysToAdd = (int)(weekdayParser.Parse(timeRange.weekday))
+	}
+
 	for timeCounter := 0; !shouldStop; timeCounter += intervalInMinutes {
+		// Setting currentStartTime
 		currentStartTime := timeRange.startTime.Add(time.Duration(timeCounter) * time.Minute)
+		currentStartTime = currentStartTime.AddDate(0, 0, daysToAdd)
+
+		// Setting currentEndingTime
 		currentEndingTime := currentStartTime.Add(eventDuration)
+		currentEndingTime = currentEndingTime.AddDate(0, 0, daysToAdd)
+
 		shouldStop =
 			currentStartTime.After(timeRange.endingTime) ||
 				currentStartTime == timeRange.endingTime ||

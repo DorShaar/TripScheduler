@@ -54,7 +54,7 @@ func (currentTimeRange TimeRange) AreCoincide(timeRange TimeRange) bool {
 func (timeRange TimeRange) getAllPossibleStartingTimes(
 	intervalInMinutes int,
 	eventDuration time.Duration) []time.Time {
-	timeList := make([]time.Time, 0)
+	var timeList []time.Time
 	var shouldStop bool = false
 	for timeCounter := 0; !shouldStop; timeCounter += intervalInMinutes {
 		currentStartTime := timeRange.startTime.Add(time.Duration(timeCounter) * time.Minute)

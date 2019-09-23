@@ -4,6 +4,6 @@ time_range:
   - Sunday 10:15 - 11:45
   - Sunday 12:15 - 13:45
   - Tuesday 08:15 - 09:30
-  - Tuesday 10:30 - 11:45
+  - Tuesday 10:30 - 12:00
 duration: 1.5h
 precaution_duration: 0m

@@ -1,27 +1,16 @@
 package main
 
 import (
-	"trip_scheduler/event"
+	logging "trip_scheduler/logger"
+	"trip_scheduler/schedule"
 )
 
 func main() {
-	e := event.EventRange{}
-	e.Test()
-	// duration, _ := time.ParseDuration("90m")
-	// precautionTime, _ := time.ParseDuration("25m")
+	databasePath := "C:\\Users\\Public\\DorShaar\\GolangWork\\src\\trip_scheduler\\db\\files\\stav_third_year"
+	logger := logging.Logger{}
+	logger.Init()
 
-	// e := event.Event{
-	// 	EventName: "Shopping !",
-	// 	Location:  "Oxford Street",
-	// 	EventTime: event.EventTime{
-	// 		ActualStartingTime: time.Now(),
-	// 		Duration:           duration,
-	// 		PrecautionDuration: precautionTime}}
-
-	// d := schedule.Schedule{}
-	// fmt.Println(d.EventLists == nil)
-	// fmt.Printf("%d\n", len(d.EventLists))
-
-	// d.AddEvent(e)
-	// fmt.Printf("%d", len(d.EventLists))
+	scheduleBuilder := schedule.ScheduleBuilder{}
+	scheduleBuilder.Init(logger)
+	scheduleBuilder.BuildSchedulesFromFiles(databasePath)
 }

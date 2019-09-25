@@ -5,18 +5,34 @@ import (
 	"fmt"
 	"io/ioutil"
 	"path/filepath"
+	"strconv"
 	"trip_scheduler/event"
+	logging "trip_scheduler/logger"
 )
 
-func BuildSchedulesFromFiles(filesDirectory string) list.List {
+type ScheduleBuilder struct {
+	logger LoggerInterface
+}
+
+func (scheduleBuilder *ScheduleBuilder) Init(logger logging.Logger) {
+	scheduleBuilder.logger = logger
+}
+
+func (scheduleBuilder *ScheduleBuilder) BuildSchedulesFromFiles(filesDirectory string) list.List {
+	logger := scheduleBuilder.logger
+
+	logger.Log("Building schedules from files in " + filesDirectory)
+
 	shouldProcessQueue := list.New()
 	doneQueue := list.New()
 
 	emptySchedule := Schedule{}
 	shouldProcessQueue.PushBack(emptySchedule)
+	logger.Log("Empty schedule pushed back to queue")
 
 	allRegisteredEvents := getAllEventsList(filesDirectory)
 	for _, registeredEvent := range allRegisteredEvents {
+		logger.Log("Queue size: " + strconv.Itoa(shouldProcessQueue.Len()))
 		for shouldProcessQueue.Len() > 0 {
 			element := shouldProcessQueue.Front()
 			shouldProcessQueue.Remove(element)
@@ -25,13 +41,18 @@ func BuildSchedulesFromFiles(filesDirectory string) list.List {
 			if !ok {
 				errMsg := fmt.Sprintf("Some element was of type %T, expected type Schedule\n",
 					originalSchedule)
+				logger.LogError(errMsg)
 				panic(errMsg)
 			}
 
 			for _, possibleEvent := range registeredEvent.CreateEventsList() {
 				newSchedule := originalSchedule
+				logger.Log("Trying to add event " + possibleEvent.GetEventData())
 				if newSchedule.TryAddEvent(possibleEvent) {
 					doneQueue.PushBack(newSchedule)
+					logger.Log("Event added")
+				} else {
+					logger.Log("Event was not added")
 				}
 			}
 		}
@@ -42,6 +63,7 @@ func BuildSchedulesFromFiles(filesDirectory string) list.List {
 	}
 
 	doneQueue = shouldProcessQueue
+	logger.Log("Done building " + strconv.Itoa(doneQueue.Len()) + " schedules")
 	return *doneQueue
 }
 

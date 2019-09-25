@@ -13,15 +13,9 @@ type Event struct {
 }
 
 func (e Event) GetEventData() string {
-	eventDescription := fmt.Sprintf("'%s', located on %s, starts on %s %s for %.1f hours. Should Come %.0f minutes before.",
+	return fmt.Sprintf("'%s' at %s",
 		e.EventName,
-		e.Location,
-		e.EventTime.actualStartingTime.Weekday(),
-		e.EventTime.actualStartingTime.Format("2006-01-02 15:04"),
-		e.EventTime.Duration.Hours(),
-		e.EventTime.PrecautionDuration.Minutes())
-
-	return eventDescription
+		e.EventTime.actualStartingTime.Format("2006-01-02 15:04"))
 }
 
 func (event *Event) RegisterTimeRange(newTimeRange TimeRange) {

@@ -45,3 +45,8 @@ func (logger Logger) Log(msg string) {
 	log.SetOutput(logFile)
 	log.Println(msg)
 }
+
+func (logger Logger) LogError(msg string) {
+	errorMsg := "ERROR: " + msg
+	logger.Log(errorMsg)
+}

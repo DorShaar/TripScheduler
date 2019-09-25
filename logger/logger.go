@@ -1,19 +1,36 @@
 package logging
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"path"
 	"time"
 )
 
 type Logger struct {
 	isInitialized bool
 	fileName      string
+
+	LogsDirectory string
 }
 
-func (logger *Logger) init() {
+func (logger *Logger) Init() {
 	if !logger.isInitialized {
-		logger.fileName = time.Now().Format("2012-11-01T22:08:41")
+		// Create logs directory.
+		if logger.LogsDirectory == "" {
+			logger.LogsDirectory = "Logs"
+		}
+
+		os.Mkdir(logger.LogsDirectory, os.ModeDir)
+
+		// Create logs filename
+		t := time.Now()
+		fileName := fmt.Sprintf("%d-%02d-%02dT%02d-%02d-%02d",
+			t.Year(), t.Month(), t.Day(),
+			t.Hour(), t.Minute(), t.Second()) + ".log"
+
+		logger.fileName = path.Join(logger.LogsDirectory, fileName)
 		logger.isInitialized = true
 	}
 }

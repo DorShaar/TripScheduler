@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	logging "trip_scheduler/logger"
 	"trip_scheduler/schedule"
 )
@@ -12,5 +13,18 @@ func main() {
 
 	scheduleBuilder := schedule.ScheduleBuilder{}
 	scheduleBuilder.Init(logger)
-	scheduleBuilder.BuildSchedulesFromFiles(databasePath)
+	list := scheduleBuilder.BuildSchedulesFromFiles(databasePath)
+
+	schedulePrinter := schedule.SchedulePrinter{}
+	schedulePrinter.Init(logger)
+
+	schedule, ok := list.Back().Value.(schedule.Schedule)
+	if !ok {
+		errMsg := fmt.Sprintf("Some element was of type %T, expected type Schedule\n",
+			schedule)
+		logger.LogError(errMsg)
+		panic(errMsg)
+	}
+
+	schedulePrinter.PrintSchedule(schedule)
 }

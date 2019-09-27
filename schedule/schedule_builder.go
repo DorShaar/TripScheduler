@@ -11,7 +11,8 @@ import (
 )
 
 type ScheduleBuilder struct {
-	logger LoggerInterface
+	logger        LoggerInterface
+	itemIdCreator ItemIdCreator
 }
 
 func (scheduleBuilder *ScheduleBuilder) Init(logger logging.Logger) {
@@ -46,11 +47,11 @@ func (scheduleBuilder *ScheduleBuilder) BuildSchedulesFromFiles(filesDirectory s
 			}
 
 			for _, possibleEvent := range registeredEvent.CreateEventsList() {
-				newSchedule := originalSchedule
+				newSchedule := scheduleBuilder.copySchedule(originalSchedule)
 				logger.Log("Trying to add event " + possibleEvent.GetEventData())
 				if newSchedule.TryAddEvent(possibleEvent) {
 					doneQueue.PushBack(newSchedule)
-					logger.Log("Event added")
+					logger.Log("Event added to schedule id " + strconv.Itoa(newSchedule.id))
 				} else {
 					logger.Log("Event was not added")
 				}
@@ -95,4 +96,10 @@ func getFilesFromDirectory(filesDirectory string) (filePaths []string) {
 	}
 
 	return filePaths
+}
+
+func (scheduleBuilder *ScheduleBuilder) copySchedule(originalSchedule Schedule) (copiedSchedule Schedule) {
+	copiedSchedule = originalSchedule
+	copiedSchedule.id = scheduleBuilder.itemIdCreator.NextId()
+	return copiedSchedule
 }

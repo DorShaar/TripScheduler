@@ -5,6 +5,7 @@ import (
 )
 
 type Schedule struct {
+	id         int
 	eventsList []event.Event
 }
 

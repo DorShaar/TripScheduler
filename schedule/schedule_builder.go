@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strconv"
+	"trip_scheduler/copier"
 	"trip_scheduler/event"
 	logging "trip_scheduler/logger"
 )
@@ -99,8 +100,10 @@ func getFilesFromDirectory(filesDirectory string) (filePaths []string) {
 	return filePaths
 }
 
-func (scheduleBuilder *ScheduleBuilder) copySchedule(originalSchedule Schedule) (copiedSchedule Schedule) {
-	copiedSchedule = originalSchedule
+func (scheduleBuilder *ScheduleBuilder) copySchedule(
+	originalSchedule Schedule) Schedule {
+	copiedSchedule := Schedule{}
+	copier.Copy(&copiedSchedule.eventsList, &originalSchedule.eventsList)
 	copiedSchedule.id = scheduleBuilder.itemIdCreator.NextId()
 	return copiedSchedule
 }

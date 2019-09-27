@@ -48,7 +48,8 @@ func (scheduleBuilder *ScheduleBuilder) BuildSchedulesFromFiles(filesDirectory s
 
 			for _, possibleEvent := range registeredEvent.CreateEventsList() {
 				newSchedule := scheduleBuilder.copySchedule(originalSchedule)
-				logger.Log("Trying to add event " + possibleEvent.GetEventData())
+				logger.Log("Trying to add to schedule " + strconv.Itoa(originalSchedule.id) +
+					" event " + possibleEvent.GetEventData())
 				if newSchedule.TryAddEvent(possibleEvent) {
 					doneQueue.PushBack(newSchedule)
 					logger.Log("Event added to schedule id " + strconv.Itoa(newSchedule.id))

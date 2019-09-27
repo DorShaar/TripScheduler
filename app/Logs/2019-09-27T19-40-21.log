@@ -1,0 +1,37 @@
+2019/09/27 19:40:21 Building schedules from files in C:\Users\Public\DorShaar\GolangWork\src\trip_scheduler\db\files\stav_third_year
+2019/09/27 19:40:21 Empty schedule pushed back to queue
+2019/09/27 19:40:21 Queue size: 1
+2019/09/27 19:40:21 Trying to add to schedule 0 event 'Decisions Making' at 0000-01-03 14:15
+2019/09/27 19:40:21 Event added to schedule id 0
+2019/09/27 19:40:21 Queue size: 1
+2019/09/27 19:40:21 Trying to add to schedule 0 event 'People Development' at 0000-01-05 10:15
+2019/09/27 19:40:21 Event added to schedule id 1
+2019/09/27 19:40:21 Queue size: 1
+2019/09/27 19:40:21 Trying to add to schedule 1 event 'Practical practice' at 0000-01-01 16:15
+2019/09/27 19:40:21 Event added to schedule id 2
+2019/09/27 19:40:21 Queue size: 1
+2019/09/27 19:40:21 Trying to add to schedule 2 event 'Psychology A' at 0000-01-01 10:30
+2019/09/27 19:40:21 Event added to schedule id 3
+2019/09/27 19:40:21 Trying to add to schedule 2 event 'Psychology A' at 0000-01-01 12:30
+2019/09/27 19:40:21 Event added to schedule id 4
+2019/09/27 19:40:21 Trying to add to schedule 2 event 'Psychology A' at 0000-01-04 14:15
+2019/09/27 19:40:21 Event added to schedule id 5
+2019/09/27 19:40:21 Done building 3 schedules
+2019/09/27 19:40:21 Printing schedule id 5
+2019/09/27 19:40:21 'Practical practice' at 0000-01-01 16:15
+2019/09/27 19:40:21 'Decisions Making' at 0000-01-03 14:15
+2019/09/27 19:40:21 'Psychology A' at 0000-01-04 14:15
+2019/09/27 19:40:21 'People Development' at 0000-01-05 10:15
+2019/09/27 19:40:21 
+2019/09/27 19:40:21 Printing schedule id 4
+2019/09/27 19:40:21 'Practical practice' at 0000-01-01 16:15
+2019/09/27 19:40:21 'Decisions Making' at 0000-01-03 14:15
+2019/09/27 19:40:21 'Psychology A' at 0000-01-04 14:15
+2019/09/27 19:40:21 'People Development' at 0000-01-05 10:15
+2019/09/27 19:40:21 
+2019/09/27 19:40:21 Printing schedule id 3
+2019/09/27 19:40:21 'Practical practice' at 0000-01-01 16:15
+2019/09/27 19:40:21 'Decisions Making' at 0000-01-03 14:15
+2019/09/27 19:40:21 'Psychology A' at 0000-01-04 14:15
+2019/09/27 19:40:21 'People Development' at 0000-01-05 10:15
+2019/09/27 19:40:21 

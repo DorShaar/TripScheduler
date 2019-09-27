@@ -18,13 +18,16 @@ func main() {
 	schedulePrinter := schedule.SchedulePrinter{}
 	schedulePrinter.Init(logger)
 
-	schedule, ok := list.Back().Value.(schedule.Schedule)
-	if !ok {
-		errMsg := fmt.Sprintf("Some element was of type %T, expected type Schedule\n",
-			schedule)
-		logger.LogError(errMsg)
-		panic(errMsg)
-	}
+	for e := list.Back(); e != nil; e = e.Prev() {
+		schedule, ok := e.Value.(schedule.Schedule)
+		if !ok {
+			errMsg := fmt.Sprintf("Some element was of type %T, expected type Schedule\n",
+				schedule)
+			logger.LogError(errMsg)
+			panic(errMsg)
+		}
 
-	schedulePrinter.PrintSchedule(schedule)
+		schedulePrinter.PrintSchedule(schedule)
+		logger.Log("")
+	}
 }

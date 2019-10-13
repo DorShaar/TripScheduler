@@ -25,7 +25,8 @@ func (queueAdapter *QueueAdapter) Init(logger logging.Logger) {
 func (queueAdapter *QueueAdapter) Connect() {
 	conn, err := stomp.Dial("tcp", queueAdapter.address)
 	if err != nil {
-		queueAdapter.logger.LogError("Failed dialing to " + queueAdapter.address)
+		queueAdapter.logger.LogError("Failad dialing to " + queueAdapter.address)
+		return
 	}
 
 	queueAdapter.conn = conn
@@ -39,6 +40,7 @@ func (queueAdapter *QueueAdapter) SendString(message string, dest string) {
 
 	if err != nil {
 		queueAdapter.logger.LogError("Failed sending " + message + " to " + dest)
+		return
 	}
 }
 

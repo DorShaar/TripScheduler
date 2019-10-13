@@ -35,9 +35,7 @@ func (queueAdapter *QueueAdapter) SendString(message string, dest string) {
 	err := queueAdapter.conn.Send(
 		dest,            // destination
 		"text/plain",    // content-type
-		[]byte(message), // body
-		stomp.SendOpt.Receipt,
-		stomp.SendOpt.Header("expires", "2049-12-31 23:59:59"))
+		[]byte(message)) // body
 
 	if err != nil {
 		queueAdapter.logger.LogError("Failed sending " + message + " to " + dest)
@@ -46,4 +44,5 @@ func (queueAdapter *QueueAdapter) SendString(message string, dest string) {
 
 func (queueAdapter *QueueAdapter) Disconnect() {
 	queueAdapter.conn.Disconnect()
+	queueAdapter.logger.Log("Connection disconnected from " + queueAdapter.address)
 }

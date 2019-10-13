@@ -3,13 +3,24 @@ package main
 import (
 	"fmt"
 	logging "trip_scheduler/logger"
+	"trip_scheduler/queue_adapter"
 	"trip_scheduler/schedule"
 )
 
 func main() {
-	databasePath := "C:\\Users\\Public\\DorShaar\\GolangWork\\src\\trip_scheduler\\db\\files\\stav_third_year"
 	logger := logging.Logger{}
 	logger.Init()
+
+	queueAdapter := queue_adapter.QueueAdapter{}
+	queueAdapter.Init(logger)
+
+	queueAdapter.Connect()
+	defer queueAdapter.Disconnect()
+
+	queueAdapter.SendString("Hello World !", "some_queue")
+	return
+
+	databasePath := "C:\\Users\\Public\\DorShaar\\GolangWork\\src\\trip_scheduler\\db\\files\\stav_third_year"
 
 	scheduleBuilder := schedule.ScheduleBuilder{}
 	scheduleBuilder.Init(logger)

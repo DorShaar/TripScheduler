@@ -6,9 +6,11 @@ import (
 	"io/ioutil"
 	"path/filepath"
 	"strconv"
-	"trip_scheduler/copier"
+
 	"trip_scheduler/event"
 	logging "trip_scheduler/logger"
+
+	"github.com/jinzhu/copier"
 )
 
 type ScheduleBuilder struct {

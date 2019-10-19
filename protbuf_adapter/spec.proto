@@ -1,0 +1,21 @@
+syntax = 'proto3';
+import "google/protobuf/timestamp.proto";
+
+package protbuf_adapter;
+
+message Schedule {
+	int32 ID = 1;
+	repeated Event EventsList = 2;
+}
+
+message Event {
+  string EventName = 1;
+  string Location = 2;
+  repeated EventTime EventTime = 3;
+}
+
+message EventTime {
+  int32 DurationInSec = 1;
+  int32 PrecautionDurationInSec = 2;
+  google.protobuf.Timestamp ActualStartingTime = 3;
+}

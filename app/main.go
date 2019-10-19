@@ -17,17 +17,11 @@ func main() {
 	queueAdapter.Connect()
 	defer queueAdapter.Disconnect()
 
-	queueAdapter.SendString("Hello World !", "some_queue")
-	return
-
 	databasePath := "C:\\Users\\Public\\DorShaar\\GolangWork\\src\\trip_scheduler\\db\\files\\stav_third_year"
 
 	scheduleBuilder := schedule.ScheduleBuilder{}
 	scheduleBuilder.Init(logger)
 	list := scheduleBuilder.BuildSchedulesFromFiles(databasePath)
-
-	schedulePrinter := schedule.SchedulePrinter{}
-	schedulePrinter.Init(logger)
 
 	for e := list.Back(); e != nil; e = e.Prev() {
 		schedule, ok := e.Value.(schedule.Schedule)
@@ -38,7 +32,17 @@ func main() {
 			panic(errMsg)
 		}
 
-		schedulePrinter.PrintSchedule(schedule)
-		logger.Log("")
+		sendSchedule(queueAdapter, "schedules", schedule)
 	}
+
+
+// // After getting shcedules back.
+// 	schedulePrinter := schedule.SchedulePrinter{}
+// 	schedulePrinter.Init(logger)
+}
+
+func sendSchedule(queueAdapter queue_adapter.QueueAdapter, queueName string, schedule schedule.Schedule) {
+	schedule.
+
+	queueAdapter.SendString(, queueName)
 }

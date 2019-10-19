@@ -24,3 +24,13 @@ func (schedule *Schedule) TryAddEvent(newEvent event.Event) bool {
 
 	return shouldAddEvent
 }
+
+func (schedule *Schedule) Id() int {
+	return schedule.id
+}
+
+func (schedule *Schedule) GetEventsListCopy() []event.Event {
+	eventsCopy := make([]event.Event, len(schedule.eventsList))
+	copy(eventsCopy, schedule.eventsList)
+	return eventsCopy
+}

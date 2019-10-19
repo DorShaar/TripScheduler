@@ -11,7 +11,7 @@ message Schedule {
 message Event {
   string EventName = 1;
   string Location = 2;
-  repeated EventTime EventTime = 3;
+  EventTime EventTime = 3;
 }
 
 message EventTime {

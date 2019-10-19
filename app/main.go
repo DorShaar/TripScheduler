@@ -45,29 +45,20 @@ func main() {
 }
 
 func sendSchedule(queueAdapter queue_adapter.QueueAdapter, queueName string, schedule schedule.Schedule) {
-	scheduleDTO := CreateDTOObject(schedule)
+	scheduleDTO := schedule_dto.CreateDTOSchedule(schedule)
 
 	serializedSchedule, err := proto.Marshal(scheduleDTO)
 	if err != nil {
 		log.Fatalln("Failed to encode address book:", err)
 	}
 
-	// TODO queueAdapter.SendBytes(serializedSchedule, queueName)
-}
-
-func CreateDTOObject(schedule schedule.Schedule) *schedule_dto.Schedule {
-	scheduleDTO := &schedule_dto.Schedule{}
-	scheduleDTO.ID = int32(schedule.Id())
-
-	eventsList := schedule.GetEventsListCopy()
-
-	eventsListDTO := make([]schedule_dto.Event, 0)
-	for _, event := range schedule.eventsList {
-		if event.EventTime.AreCoincide(newEvent.EventTime) {
-			shouldAddEvent = false
-			break
-		}
+	deserializedschedule := &schedule_dto.Schedule{}
+	err = proto.Unmarshal(serializedSchedule, deserializedschedule)
+	if err != nil {
+		panic(err)
 	}
 
-	return scheduleDTO
+	fmt.Println(deserializedschedule)
+
+	// TODO queueAdapter.SendBytes(serializedSchedule, queueName)
 }

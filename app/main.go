@@ -2,9 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
 	logging "trip_scheduler/logger"
 	"trip_scheduler/queue_adapter"
 	"trip_scheduler/schedule"
+	"trip_scheduler/schedule_dto"
+
+	"github.com/gogo/protobuf/proto"
 )
 
 func main() {
@@ -35,14 +39,35 @@ func main() {
 		sendSchedule(queueAdapter, "schedules", schedule)
 	}
 
-
-// // After getting shcedules back.
-// 	schedulePrinter := schedule.SchedulePrinter{}
-// 	schedulePrinter.Init(logger)
+	// TODO: After getting shcedules back.
+	// 	schedulePrinter := schedule.SchedulePrinter{}
+	// 	schedulePrinter.Init(logger)
 }
 
 func sendSchedule(queueAdapter queue_adapter.QueueAdapter, queueName string, schedule schedule.Schedule) {
-	schedule.
+	scheduleDTO := CreateDTOObject(schedule)
 
-	queueAdapter.SendString(, queueName)
+	serializedSchedule, err := proto.Marshal(scheduleDTO)
+	if err != nil {
+		log.Fatalln("Failed to encode address book:", err)
+	}
+
+	// TODO queueAdapter.SendBytes(serializedSchedule, queueName)
+}
+
+func CreateDTOObject(schedule schedule.Schedule) *schedule_dto.Schedule {
+	scheduleDTO := &schedule_dto.Schedule{}
+	scheduleDTO.ID = int32(schedule.Id())
+
+	eventsList := schedule.GetEventsListCopy()
+
+	eventsListDTO := make([]schedule_dto.Event, 0)
+	for _, event := range schedule.eventsList {
+		if event.EventTime.AreCoincide(newEvent.EventTime) {
+			shouldAddEvent = false
+			break
+		}
+	}
+
+	return scheduleDTO
 }

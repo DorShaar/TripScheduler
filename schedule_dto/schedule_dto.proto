@@ -1,7 +1,7 @@
 syntax = 'proto3';
 import "google/protobuf/timestamp.proto";
 
-package protbuf_adapter;
+package schedule_dto;
 
 message Schedule {
 	int32 ID = 1;

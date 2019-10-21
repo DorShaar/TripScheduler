@@ -5,6 +5,8 @@ import (
 	"trip_scheduler/time_extended"
 )
 
+var epochTimeYear = 1970
+
 type TimeRange struct {
 	weekday    string
 	startTime  time.Time
@@ -14,6 +16,14 @@ type TimeRange struct {
 func CreateRange(start time.Time, end time.Time) (timeRange TimeRange) {
 	if start.After(end) {
 		panic("Given starting time is after given ending time")
+	}
+
+	if start.Year() == 0 {
+		start = start.AddDate(epochTimeYear, 0, 0)
+	}
+
+	if end.Year() == 0 {
+		end = end.AddDate(epochTimeYear, 0, 0)
 	}
 
 	timeRange.startTime = start
@@ -27,6 +37,10 @@ func CreateRangeByDuration(start time.Time, duration time.Duration) (timeRange T
 	}
 
 	timeRange.startTime = start
+	if start.Year() == 0 {
+		start = start.AddDate(epochTimeYear, 0, 0)
+	}
+
 	timeRange.endingTime = start.Add(duration)
 	return timeRange
 }

@@ -36,27 +36,16 @@ func main() {
 			panic(errMsg)
 		}
 
-		sendSchedule(queueAdapter, "schedules", schedule, logger)
+		sendSchedule(queueAdapter, "schedules", schedule)
 	}
-
-	// TODO: After getting shcedules back.
-	// 	schedulePrinter := schedule.SchedulePrinter{}
-	// 	schedulePrinter.Init(logger)
 }
 
 func sendSchedule(
-	queueAdapter queue_adapter.QueueAdapter, queueName string, scheduleToSend schedule.Schedule, logger logging.Logger) {
+	queueAdapter queue_adapter.QueueAdapter,
+	queueName string,
+	scheduleToSend schedule.Schedule) {
 
-	schedulePrinter := schedule.SchedulePrinter{}
-	schedulePrinter.Init(logger)
-	schedulePrinter.PrintSchedule(scheduleToSend)
-
-	scheduleDTO := schedule_dto.CreateDTOSchedule(scheduleToSend)
-	scheduleDTOPrinter := schedule_dto.SchedulePrinter{}
-	scheduleDTOPrinter.Init(logger)
-	scheduleDTOPrinter.PrintSchedule(*scheduleDTO)
-
-	serializedSchedule, err := proto.Marshal(scheduleDTO)
+	serializedSchedule, err := proto.Marshal(schedule_dto.CreateDTOSchedule(scheduleToSend))
 	if err != nil {
 		log.Fatalln("Failed to encode address book:", err)
 	}
@@ -67,7 +56,5 @@ func sendSchedule(
 		panic(err)
 	}
 
-	scheduleDTOPrinter.PrintSchedule(*deserializedScheduleDTO)
-
-	// TODO queueAdapter.SendBytes(serializedSchedule, queueName)
+	queueAdapter.SendBytes(serializedSchedule, queueName)
 }

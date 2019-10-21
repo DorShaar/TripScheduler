@@ -1,8 +1,6 @@
 package queue_adapter
 
 import (
-	logging "trip_scheduler/logger"
-
 	"github.com/go-stomp/stomp"
 )
 
@@ -17,7 +15,7 @@ type QueueAdapter struct {
 	conn    *stomp.Conn
 }
 
-func (queueAdapter *QueueAdapter) Init(logger logging.Logger) {
+func (queueAdapter *QueueAdapter) Init(logger Logger) {
 	queueAdapter.logger = logger
 	queueAdapter.address = "localhost:61613"
 }
@@ -40,6 +38,18 @@ func (queueAdapter *QueueAdapter) SendString(message string, dest string) {
 
 	if err != nil {
 		queueAdapter.logger.LogError("Failed sending " + message + " to " + dest)
+		return
+	}
+}
+
+func (queueAdapter *QueueAdapter) SendBytes(message []byte, dest string) {
+	err := queueAdapter.conn.Send(
+		dest,                       // destination
+		"application/octet-stream", // content-type
+		message)                    // body
+
+	if err != nil {
+		queueAdapter.logger.LogError("Failed sending bytes message to " + dest)
 		return
 	}
 }

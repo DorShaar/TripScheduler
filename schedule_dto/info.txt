@@ -1,0 +1,2 @@
+to create .go file from .proto file, run the command:
+	protoc --go_out=.\ schedule_dto.proto

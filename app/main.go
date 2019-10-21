@@ -36,7 +36,7 @@ func main() {
 			panic(errMsg)
 		}
 
-		sendSchedule(queueAdapter, "schedules", schedule)
+		sendSchedule(queueAdapter, "schedules", schedule, logger)
 	}
 
 	// TODO: After getting shcedules back.
@@ -44,21 +44,30 @@ func main() {
 	// 	schedulePrinter.Init(logger)
 }
 
-func sendSchedule(queueAdapter queue_adapter.QueueAdapter, queueName string, schedule schedule.Schedule) {
-	scheduleDTO := schedule_dto.CreateDTOSchedule(schedule)
+func sendSchedule(
+	queueAdapter queue_adapter.QueueAdapter, queueName string, scheduleToSend schedule.Schedule, logger logging.Logger) {
+
+	schedulePrinter := schedule.SchedulePrinter{}
+	schedulePrinter.Init(logger)
+	schedulePrinter.PrintSchedule(scheduleToSend)
+
+	scheduleDTO := schedule_dto.CreateDTOSchedule(scheduleToSend)
+	scheduleDTOPrinter := schedule_dto.SchedulePrinter{}
+	scheduleDTOPrinter.Init(logger)
+	scheduleDTOPrinter.PrintSchedule(*scheduleDTO)
 
 	serializedSchedule, err := proto.Marshal(scheduleDTO)
 	if err != nil {
 		log.Fatalln("Failed to encode address book:", err)
 	}
 
-	deserializedschedule := &schedule_dto.Schedule{}
-	err = proto.Unmarshal(serializedSchedule, deserializedschedule)
+	deserializedScheduleDTO := &schedule_dto.Schedule{}
+	err = proto.Unmarshal(serializedSchedule, deserializedScheduleDTO)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Println(deserializedschedule)
+	scheduleDTOPrinter.PrintSchedule(*deserializedScheduleDTO)
 
 	// TODO queueAdapter.SendBytes(serializedSchedule, queueName)
 }
